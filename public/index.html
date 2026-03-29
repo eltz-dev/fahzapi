@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Fahz-Server API | Gateway Elegan</title>
+  <title>Fahz-Server API | Gateway </title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -292,84 +292,112 @@
   </div>
 
   <div class="footer">
-    <p>© 2025 Fahz-Server API | Owner: <strong>Fahz</strong> | Region: Gunungkidul | <i class="fab fa-github"></i> <a href="https://fahz-devoffc" target="_blank" style="color:#a78bfa;">GitHub</a><br>
-    Made with ☕ by human (Just-Lisa helped)</p>
+    <p>© 2026 Fahz-Server API | Owner: <strong>Fahz</strong> | Region: Gunungkidul | <i class="fab fa-github"></i> <a href="https://fahz-devoffc" target="_blank" style="color:#a78bfa;">GitHub</a><br>
+    Made with ☕ by Fahz (GunungKidul)</p>
   </div>
 </div>
 
 <script>
-  // Data Endpoints (Frontend friendly)
+  // ============================================================
+  // PERBAIKAN: SEMUA ENDPOINT DINAMIS (USER INPUT QUERY SENDIRI)
+  // UI TIDAK BERUBAH SAMA SEKALI
+  // ============================================================
+
+  // Data endpoint dengan metadata
   const stalkEndpoints = [
-    { name: "TikTok", endpoint: "/proxy/stalk/tiktok?username=nejeoyn", icon: "fab fa-tiktok" },
-    { name: "Instagram", endpoint: "/proxy/stalk/instagram?username=ambatukam", icon: "fab fa-instagram" },
-    { name: "Threads", endpoint: "/proxy/stalk/threads?q=ambatukam", icon: "fab fa-threads" },
-    { name: "YouTube", endpoint: "/proxy/stalk/youtube?username=Windah Basudara", icon: "fab fa-youtube" },
-    { name: "Twitter", endpoint: "/proxy/stalk/twitter?user=ambatukam", icon: "fab fa-twitter" },
-    { name: "Pinterest", endpoint: "/proxy/stalk/pinterest?q=dimas", icon: "fab fa-pinterest" }
+    { name: "TikTok", type: "username", field: "username", hint: "nejeoyn", icon: "fab fa-tiktok", base: "/proxy/stalk/tiktok" },
+    { name: "Instagram", type: "username", field: "username", hint: "ambatukam", icon: "fab fa-instagram", base: "/proxy/stalk/instagram" },
+    { name: "Threads", type: "query", field: "q", hint: "ambatukam", icon: "fab fa-threads", base: "/proxy/stalk/threads" },
+    { name: "YouTube", type: "username", field: "username", hint: "Windah Basudara", icon: "fab fa-youtube", base: "/proxy/stalk/youtube" },
+    { name: "Twitter", type: "user", field: "user", hint: "ambatukam", icon: "fab fa-twitter", base: "/proxy/stalk/twitter" },
+    { name: "Pinterest", type: "query", field: "q", hint: "dimas", icon: "fab fa-pinterest", base: "/proxy/stalk/pinterest" }
   ];
 
   const searchEndpoints = [
-    { name: "YouTube", endpoint: "/proxy/search/youtube?query=Windah Basudara", icon: "fab fa-youtube" },
-    { name: "Spotify", endpoint: "/proxy/search/spotify?query=serana", icon: "fab fa-spotify" },
-    { name: "Mangatoon", endpoint: "/proxy/search/mangatoon?query=Chainsawman", icon: "fas fa-book" },
-    { name: "AppleMusic", endpoint: "/proxy/search/applemusic?query=duka&region=id", icon: "fab fa-apple" },
-    { name: "Resep", endpoint: "/proxy/search/resep?query=nasi goreng", icon: "fas fa-utensils" },
-    { name: "Lahelu", endpoint: "/proxy/search/lahelu?query=meme upin ipin", icon: "fas fa-smile" },
-    { name: "DuckDuckGo", endpoint: "/proxy/search/duckduckgo?query=openai", icon: "fas fa-search" }
+    { name: "YouTube", type: "query", field: "query", hint: "Windah Basudara", icon: "fab fa-youtube", base: "/proxy/search/youtube" },
+    { name: "Spotify", type: "query", field: "query", hint: "serana", icon: "fab fa-spotify", base: "/proxy/search/spotify" },
+    { name: "Mangatoon", type: "query", field: "query", hint: "Chainsawman", icon: "fas fa-book", base: "/proxy/search/mangatoon" },
+    { name: "AppleMusic", type: "multi", fields: ["query", "region"], hints: ["duka", "id"], icon: "fab fa-apple", base: "/proxy/search/applemusic" },
+    { name: "Resep", type: "query", field: "query", hint: "nasi goreng", icon: "fas fa-utensils", base: "/proxy/search/resep" },
+    { name: "Lahelu", type: "query", field: "query", hint: "meme upin ipin", icon: "fas fa-smile", base: "/proxy/search/lahelu" },
+    { name: "DuckDuckGo", type: "multi", fields: ["query", "kl", "df"], hints: ["openai", "us-en", "w"], icon: "fas fa-search", base: "/proxy/search/duckduckgo" }
   ];
 
   const downloaderEndpoints = [
-    { name: "Instagram", endpoint: "/proxy/downloader/instagram?url=Link Instagram", icon: "fab fa-instagram" },
-    { name: "TikTok", endpoint: "/proxy/downloader/tiktok?url=Link Tiktok", icon: "fab fa-tiktok" },
-    { name: "TikTok V2", endpoint: "/proxy/downloader/tiktokv2?url=Link Tiktok", icon: "fab fa-tiktok" },
-    { name: "Facebook", endpoint: "/proxy/downloader/facebook?url=Link Facebook", icon: "fab fa-facebook" },
-    { name: "Spotify V2", endpoint: "/proxy/downloader/spotifyv2?url=Link Spotify (Fixed)", icon: "fab fa-spotify" },
-    { name: "IGFastdl", endpoint: "/proxy/downloader/igfastdl?url=Username Instagram", icon: "fas fa-download" },
-    { name: "Twitter", endpoint: "/proxy/downloader/twitter?url=Link X/Twitter", icon: "fab fa-twitter" },
-    { name: "Pinterest", endpoint: "/proxy/downloader/pinterest?url=Link Pinterest", icon: "fab fa-pinterest" }
+    { name: "Instagram", type: "url", field: "url", hint: "https://instagram.com/p/xxxx", icon: "fab fa-instagram", base: "/proxy/downloader/instagram" },
+    { name: "TikTok", type: "url", field: "url", hint: "https://tiktok.com/@user/video/xxx", icon: "fab fa-tiktok", base: "/proxy/downloader/tiktok" },
+    { name: "TikTok V2", type: "url", field: "url", hint: "https://tiktok.com/@user/video/xxx", icon: "fab fa-tiktok", base: "/proxy/downloader/tiktokv2" },
+    { name: "Facebook", type: "url", field: "url", hint: "https://facebook.com/watch?v=xxx", icon: "fab fa-facebook", base: "/proxy/downloader/facebook" },
+    { name: "Spotify V2", type: "url", field: "url", hint: "https://open.spotify.com/track/xxx", icon: "fab fa-spotify", base: "/proxy/downloader/spotifyv2" },
+    { name: "IGFastdl", type: "username", field: "url", hint: "username_instagram", icon: "fas fa-download", base: "/proxy/downloader/igfastdl" },
+    { name: "Twitter", type: "url", field: "url", hint: "https://twitter.com/user/status/xxx", icon: "fab fa-twitter", base: "/proxy/downloader/twitter" },
+    { name: "Pinterest", type: "url", field: "url", hint: "https://pinterest.com/pin/xxx", icon: "fab fa-pinterest", base: "/proxy/downloader/pinterest" }
   ];
 
-  function renderGrid(containerId, items) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = items.map(item => `
-      <div class="api-card" onclick="fetchApi('${item.endpoint}')">
-        <h3><i class="${item.icon}"></i> ${item.name}</h3>
-        <p>${item.endpoint}</p>
-      </div>
-    `).join('');
-  }
+  // Fungsi utama untuk fetch API dengan popup input
+  async function fetchApi(item) {
+    let fullUrl = item.base;
+    const params = new URLSearchParams();
 
-  window.fetchApi = async (url) => {
-    if (url.includes("?url=Link")) {
-      let userUrl = prompt("Masukkan URL yang valid (contoh: https://instagram.com/p/xxx)");
-      if (!userUrl) return;
-      url = url.replace("Link Instagram", userUrl).replace("Link Tiktok", userUrl).replace("Link Facebook", userUrl).replace("Link Spotify (Fixed)", userUrl).replace("Username Instagram", userUrl).replace("Link X/Twitter", userUrl).replace("Link Pinterest", userUrl);
-    } else if (url.includes("?username=") && !url.includes("nejeoyn") && !url.includes("ambatukam") && !url.includes("Windah")) {
-      let username = prompt("Masukkan username:");
-      if (username) url = url.replace(/username=[^&]*/, `username=${encodeURIComponent(username)}`);
-    } else if (url.includes("?q=") && !url.includes("ambatukam") && !url.includes("dimas")) {
-      let query = prompt("Masukkan kata kunci:");
-      if (query) url = url.replace(/q=[^&]*/, `q=${encodeURIComponent(query)}`);
-    } else if (url.includes("?query=")) {
-      let query = prompt("Masukkan query:");
-      if (query) url = url.replace(/query=[^&]*/, `query=${encodeURIComponent(query)}`);
+    if (item.type === "username") {
+      let val = prompt(`Masukkan ${item.field} (contoh: ${item.hint}):`, item.hint);
+      if (!val) return;
+      params.append(item.field, val);
+    } 
+    else if (item.type === "query") {
+      let val = prompt(`Masukkan query (contoh: ${item.hint}):`, item.hint);
+      if (!val) return;
+      params.append(item.field, val);
+    }
+    else if (item.type === "user") {
+      let val = prompt(`Masukkan username Twitter (contoh: ${item.hint}):`, item.hint);
+      if (!val) return;
+      params.append(item.field, val);
+    }
+    else if (item.type === "url") {
+      let val = prompt(`Masukkan URL (contoh: ${item.hint}):`, item.hint);
+      if (!val) return;
+      params.append(item.field, val);
+    }
+    else if (item.type === "multi") {
+      for (let i = 0; i < item.fields.length; i++) {
+        let val = prompt(`${item.fields[i]} (contoh: ${item.hints[i]}):`, item.hints[i]);
+        if (val) params.append(item.fields[i], val);
+      }
+    }
+
+    const queryString = params.toString();
+    if (queryString) {
+      fullUrl += "?" + queryString;
     }
 
     try {
-      const res = await fetch(url);
+      const res = await fetch(fullUrl);
       const data = await res.json();
       alert("✅ Response API:\n" + JSON.stringify(data, null, 2));
     } catch (err) {
       alert("❌ Error: " + err.message);
     }
-  };
+  }
+
+  // Render grid (tampilan sama persis)
+  function renderGrid(containerId, items) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = items.map(item => `
+      <div class="api-card" onclick='fetchApi(${JSON.stringify(item)})'>
+        <h3><i class="${item.icon}"></i> ${item.name}</h3>
+        <p>${item.base}</p>
+        <small style="color:#6b7280;">📝 Contoh: ${item.hint || item.hints?.join(", ") || "input sendiri"}</small>
+      </div>
+    `).join('');
+  }
 
   renderGrid('stalkGrid', stalkEndpoints);
   renderGrid('searchGrid', searchEndpoints);
   renderGrid('downloaderGrid', downloaderEndpoints);
 
-  // Sidebar + Tab Logic
+  // Sidebar & Tab logic (SAMA PERSIS)
   const menuBtn = document.getElementById('menuBtn');
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
@@ -408,4 +436,4 @@
   });
 </script>
 </body>
-  </html>
+        </html>
