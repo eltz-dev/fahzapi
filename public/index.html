@@ -1,1 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Fahz-Server API | Gateway Elegan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+      color: #eef2ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 1000;
+      transition: left 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      padding: 2rem 1.5rem;
+      box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #c084fc, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      margin: 8px 0;
+      border-radius: 16px;
+      color: #cbd5e6;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar nav a i {
+      width: 24px;
+      font-size: 1.2rem;
+    }
+
+    .sidebar nav a:hover, .sidebar nav a.active {
+      background: rgba(96, 165, 250, 0.15);
+      color: white;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 999;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    /* Main Content */
+    .main-content {
+      transition: all 0.3s ease;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2rem;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .menu-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      padding: 10px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .menu-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-area img {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .logo-area h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    /* Cards & Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .hero-card {
+      background: linear-gradient(145deg, #111827, #0f172a);
+      border-radius: 2rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 20px 35px -15px rgba(0,0,0,0.3);
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 2rem 0 1rem 0;
+      letter-spacing: -0.3px;
+    }
+
+    .api-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .api-card {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      padding: 1.2rem 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid rgba(255,255,255,0.03);
+      cursor: pointer;
+    }
+
+    .api-card:hover {
+      transform: translateY(-5px);
+      background: rgba(31, 41, 55, 0.8);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.4);
+      border-color: rgba(96, 165, 250, 0.3);
+    }
+
+    .api-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .api-card p {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      word-break: break-all;
+      font-family: monospace;
+    }
+
+    .badge {
+      background: #1e293b;
+      padding: 4px 10px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #a5b4fc;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin-top: 3rem;
+      font-size: 0.85rem;
+    }
+
+    .report-link {
+      color: #f472b6;
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 1rem; }
+      .api-grid { grid-template-columns: 1fr; }
+      .logo-area h1 { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar">
+  <h3>⚡ Fahz-Server</h3>
+  <nav>
+    <a href="#" class="nav-link active" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="#" class="nav-link" data-tab="report"><i class="fas fa-flag"></i> Report</a>
+  </nav>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<div class="main-content">
+  <div class="header">
+    <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    <div class="logo-area">
+      <img src="https://api.siputzx.my.id/api/canvas/captcha?background=https%3A%2F%2Fi.ibb.co%2F4YBNyvP%2Fimages-76.jpg&captchaKey=Server+API&border=%23f0f0f0&overlayOpacity=0.5" alt="Logo">
+      <h1>Fahz-Server API</h1>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="container" id="appContainer">
+    <!-- Dashboard -->
+    <div id="dashboardTab">
+      <div class="hero-card">
+        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">✨ Official Gateway</p>
+        <h2 style="font-size: 1.8rem;">Fahz-Server API</h2>
+        <p>Proxy endpoint mewah, anti CORS, dan super cepat. Pilih kategori di bawah.</p>
+        <div style="margin-top: 1rem;"><span class="badge"><i class="fas fa-shield-alt"></i> Vercel Serverless</span> <span class="badge"><i class="fas fa-code"></i> by Fahz</span></div>
+      </div>
+
+      <!-- Kategori Stalker -->
+      <h3 class="section-title"><i class="fas fa-eye"></i> Stalker</h3>
+      <div class="api-grid" id="stalkGrid"></div>
+
+      <!-- Kategori Search -->
+      <h3 class="section-title"><i class="fas fa-search"></i> Search</h3>
+      <div class="api-grid" id="searchGrid"></div>
+
+      <!-- Kategori Downloader -->
+      <h3 class="section-title"><i class="fas fa-download"></i> Downloader</h3>
+      <div class="api-grid" id="downloaderGrid"></div>
+    </div>
+
+    <!-- Report Tab (hidden awal) -->
+    <div id="reportTab" style="display: none;">
+      <div class="hero-card" style="text-align: center;">
+        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #f97316;"></i>
+        <h2 style="margin: 1rem 0;">Laporkan Masalah</h2>
+        <p>Jika kamu menemukan bug, endpoint error, atau ingin melaporkan konten ilegal, tekan tombol di bawah.</p>
+        <a href="https://fahz-developer.vercel.app/report/laporvirus.html" target="_blank" style="display: inline-block; margin-top: 1.5rem; background: #dc2626; padding: 12px 28px; border-radius: 40px; color: white; text-decoration: none; font-weight: 600;">📢 Ingin Lapor? Tekan link ini →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2025 Fahz-Server API | Owner: <strong>Fahz</strong> | Region: Gunungkidul | <i class="fab fa-github"></i> <a href="https://fahz-devoffc" target="_blank" style="color:#a78bfa;">GitHub</a><br>
+    Made with ☕ by human (Just-Lisa helped)</p>
+  </div>
+</div>
+
+<script>
+  // Data Endpoints (Frontend friendly)
+  const stalkEndpoints = [
+    { name: "TikTok", endpoint: "/proxy/stalk/tiktok?username=nejeoyn", icon: "fab fa-tiktok" },
+    { name: "Instagram", endpoint: "/proxy/stalk/instagram?username=ambatukam", icon: "fab fa-instagram" },
+    { name: "Threads", endpoint: "/proxy/stalk/threads?q=ambatukam", icon: "fab fa-threads" },
+    { name: "YouTube", endpoint: "/proxy/stalk/youtube?username=Windah Basudara", icon: "fab fa-youtube" },
+    { name: "Twitter", endpoint: "/proxy/stalk/twitter?user=ambatukam", icon: "fab fa-twitter" },
+    { name: "Pinterest", endpoint: "/proxy/stalk/pinterest?q=dimas", icon: "fab fa-pinterest" }
+  ];
+
+  const searchEndpoints = [
+    { name: "YouTube", endpoint: "/proxy/search/youtube?query=Windah Basudara", icon: "fab fa-youtube" },
+    { name: "Spotify", endpoint: "/proxy/search/spotify?query=serana", icon: "fab fa-spotify" },
+    { name: "Mangatoon", endpoint: "/proxy/search/mangatoon?query=Chainsawman", icon: "fas fa-book" },
+    { name: "AppleMusic", endpoint: "/proxy/search/applemusic?query=duka&region=id", icon: "fab fa-apple" },
+    { name: "Resep", endpoint: "/proxy/search/resep?query=nasi goreng", icon: "fas fa-utensils" },
+    { name: "Lahelu", endpoint: "/proxy/search/lahelu?query=meme upin ipin", icon: "fas fa-smile" },
+    { name: "DuckDuckGo", endpoint: "/proxy/search/duckduckgo?query=openai", icon: "fas fa-search" }
+  ];
+
+  const downloaderEndpoints = [
+    { name: "Instagram", endpoint: "/proxy/downloader/instagram?url=Link Instagram", icon: "fab fa-instagram" },
+    { name: "TikTok", endpoint: "/proxy/downloader/tiktok?url=Link Tiktok", icon: "fab fa-tiktok" },
+    { name: "TikTok V2", endpoint: "/proxy/downloader/tiktokv2?url=Link Tiktok", icon: "fab fa-tiktok" },
+    { name: "Facebook", endpoint: "/proxy/downloader/facebook?url=Link Facebook", icon: "fab fa-facebook" },
+    { name: "Spotify V2", endpoint: "/proxy/downloader/spotifyv2?url=Link Spotify (Fixed)", icon: "fab fa-spotify" },
+    { name: "IGFastdl", endpoint: "/proxy/downloader/igfastdl?url=Username Instagram", icon: "fas fa-download" },
+    { name: "Twitter", endpoint: "/proxy/downloader/twitter?url=Link X/Twitter", icon: "fab fa-twitter" },
+    { name: "Pinterest", endpoint: "/proxy/downloader/pinterest?url=Link Pinterest", icon: "fab fa-pinterest" }
+  ];
+
+  function renderGrid(containerId, items) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = items.map(item => `
+      <div class="api-card" onclick="fetchApi('${item.endpoint}')">
+        <h3><i class="${item.icon}"></i> ${item.name}</h3>
+        <p>${item.endpoint}</p>
+      </div>
+    `).join('');
+  }
+
+  window.fetchApi = async (url) => {
+    if (url.includes("?url=Link")) {
+      let userUrl = prompt("Masukkan URL yang valid (contoh: https://instagram.com/p/xxx)");
+      if (!userUrl) return;
+      url = url.replace("Link Instagram", userUrl).replace("Link Tiktok", userUrl).replace("Link Facebook", userUrl).replace("Link Spotify (Fixed)", userUrl).replace("Username Instagram", userUrl).replace("Link X/Twitter", userUrl).replace("Link Pinterest", userUrl);
+    } else if (url.includes("?username=") && !url.includes("nejeoyn") && !url.includes("ambatukam") && !url.includes("Windah")) {
+      let username = prompt("Masukkan username:");
+      if (username) url = url.replace(/username=[^&]*/, `username=${encodeURIComponent(username)}`);
+    } else if (url.includes("?q=") && !url.includes("ambatukam") && !url.includes("dimas")) {
+      let query = prompt("Masukkan kata kunci:");
+      if (query) url = url.replace(/q=[^&]*/, `q=${encodeURIComponent(query)}`);
+    } else if (url.includes("?query=")) {
+      let query = prompt("Masukkan query:");
+      if (query) url = url.replace(/query=[^&]*/, `query=${encodeURIComponent(query)}`);
+    }
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      alert("✅ Response API:\n" + JSON.stringify(data, null, 2));
+    } catch (err) {
+      alert("❌ Error: " + err.message);
+    }
+  };
+
+  renderGrid('stalkGrid', stalkEndpoints);
+  renderGrid('searchGrid', searchEndpoints);
+  renderGrid('downloaderGrid', downloaderEndpoints);
+
+  // Sidebar + Tab Logic
+  const menuBtn = document.getElementById('menuBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const dashboardTab = document.getElementById('dashboardTab');
+  const reportTab = document.getElementById('reportTab');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  }
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+  }
+
+  menuBtn.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const tab = link.getAttribute('data-tab');
+      if (tab === 'dashboard') {
+        dashboardTab.style.display = 'block';
+        reportTab.style.display = 'none';
+      } else if (tab === 'report') {
+        dashboardTab.style.display = 'none';
+        reportTab.style.display = 'block';
+      }
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      closeSidebar();
+    });
+  });
+</script>
+</body>
+  </html>
