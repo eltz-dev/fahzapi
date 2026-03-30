@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Fahz-Server API | Gateway </title>
+  <title>Fahz-Server API | Gateway Elegan</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    /* ========== EXISTING STYLES (TIDAK BERUBAH) ========== */
     * {
       margin: 0;
       padding: 0;
@@ -234,6 +235,154 @@
       .api-grid { grid-template-columns: 1fr; }
       .logo-area h1 { font-size: 1rem; }
     }
+
+    /* ========== NEW MODAL STYLES ========== */
+    .api-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 90%;
+      max-width: 700px;
+      max-height: 85vh;
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      z-index: 1100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .api-modal.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.2);
+    }
+
+    .modal-header h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-header button {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: 0.2s;
+      padding: 0 8px;
+    }
+
+    .modal-header button:hover {
+      color: white;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .param-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .param-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: #cbd5e6;
+    }
+
+    .param-group input, .param-group textarea {
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 1rem;
+      padding: 0.8rem 1rem;
+      color: white;
+      font-family: monospace;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .param-group input:focus, .param-group textarea:focus {
+      outline: none;
+      border-color: #60a5fa;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .execute-btn {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border: none;
+      border-radius: 2rem;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: 0.2s;
+      margin-bottom: 1.5rem;
+    }
+
+    .execute-btn:hover {
+      transform: scale(0.98);
+      opacity: 0.9;
+    }
+
+    .response-area {
+      background: rgba(0,0,0,0.5);
+      border-radius: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .response-area h3 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #a5b4fc;
+    }
+
+    .response-pre {
+      background: #0a0f1e;
+      padding: 1rem;
+      border-radius: 0.8rem;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #cbd5e6;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 1rem;
+      color: #60a5fa;
+    }
   </style>
 </head>
 <body>
@@ -292,18 +441,29 @@
   </div>
 
   <div class="footer">
-    <p>© 2026 Fahz-Server API | Owner: <strong>Fahz</strong> | Region: Gunungkidul | <i class="fab fa-github"></i> <a href="https://fahz-devoffc" target="_blank" style="color:#a78bfa;">GitHub</a><br>
-    Made with ☕ by Fahz (GunungKidul)</p>
+    <p>© 2025 Fahz-Server API | Owner: <strong>Fahz</strong> | Region: Gunungkidul | <i class="fab fa-github"></i> <a href="https://fahz-devoffc" target="_blank" style="color:#a78bfa;">GitHub</a><br>
+    Made with ☕ by human (Just-Lisa helped)</p>
+  </div>
+</div>
+
+<!-- ========== MODAL UNTUK API TESTER ========== -->
+<div id="apiModal" class="api-modal">
+  <div class="modal-header">
+    <h2><i id="modalIcon" class="fas fa-code"></i> <span id="modalTitle">Endpoint</span></h2>
+    <button id="closeModalBtn"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body">
+    <div id="modalParamsContainer"></div>
+    <button id="executeApiBtn" class="execute-btn"><i class="fas fa-play"></i> Execute Request</button>
+    <div class="response-area">
+      <h3><i class="fas fa-reply-all"></i> Response Preview</h3>
+      <pre id="responsePreview" class="response-pre">Belum ada request.</pre>
+    </div>
   </div>
 </div>
 
 <script>
-  // ============================================================
-  // PERBAIKAN: SEMUA ENDPOINT DINAMIS (USER INPUT QUERY SENDIRI)
-  // UI TIDAK BERUBAH SAMA SEKALI
-  // ============================================================
-
-  // Data endpoint dengan metadata
+  // ========== DATA ENDPOINT ==========
   const stalkEndpoints = [
     { name: "TikTok", type: "username", field: "username", hint: "nejeoyn", icon: "fab fa-tiktok", base: "/proxy/stalk/tiktok" },
     { name: "Instagram", type: "username", field: "username", hint: "ambatukam", icon: "fab fa-instagram", base: "/proxy/stalk/instagram" },
@@ -334,89 +494,149 @@
     { name: "Pinterest", type: "url", field: "url", hint: "https://pinterest.com/pin/xxx", icon: "fab fa-pinterest", base: "/proxy/downloader/pinterest" }
   ];
 
-  // Fungsi utama untuk fetch API dengan popup input
-  async function fetchApi(item) {
-    let fullUrl = item.base;
-    const params = new URLSearchParams();
+  // ========== MODAL LOGIC ==========
+  let currentEndpoint = null;
+  const modal = document.getElementById('apiModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalIcon = document.getElementById('modalIcon');
+  const modalParamsContainer = document.getElementById('modalParamsContainer');
+  const executeBtn = document.getElementById('executeApiBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const responsePreview = document.getElementById('responsePreview');
 
-    if (item.type === "username") {
-      let val = prompt(`Masukkan ${item.field} (contoh: ${item.hint}):`, item.hint);
-      if (!val) return;
-      params.append(item.field, val);
-    } 
-    else if (item.type === "query") {
-      let val = prompt(`Masukkan query (contoh: ${item.hint}):`, item.hint);
-      if (!val) return;
-      params.append(item.field, val);
+  function closeModal() {
+    modal.classList.remove('open');
+    currentEndpoint = null;
+    // reset form
+    modalParamsContainer.innerHTML = '';
+    responsePreview.textContent = 'Belum ada request.';
+  }
+
+  function openModal(item) {
+    // Jika modal terbuka dan endpoint yang sama, close
+    if (currentEndpoint === item && modal.classList.contains('open')) {
+      closeModal();
+      return;
     }
-    else if (item.type === "user") {
-      let val = prompt(`Masukkan username Twitter (contoh: ${item.hint}):`, item.hint);
-      if (!val) return;
-      params.append(item.field, val);
-    }
-    else if (item.type === "url") {
-      let val = prompt(`Masukkan URL (contoh: ${item.hint}):`, item.hint);
-      if (!val) return;
-      params.append(item.field, val);
-    }
-    else if (item.type === "multi") {
+    // Set current
+    currentEndpoint = item;
+    // Set judul dan icon
+    modalTitle.textContent = item.name;
+    modalIcon.className = item.icon;
+    // Build form dinamis
+    buildParamForm(item);
+    // Reset response
+    responsePreview.textContent = 'Belum ada request.';
+    // Tampilkan modal
+    modal.classList.add('open');
+  }
+
+  function buildParamForm(item) {
+    modalParamsContainer.innerHTML = '';
+    if (item.type === 'username') {
+      addParamField(item.field, item.hint);
+    } else if (item.type === 'query') {
+      addParamField(item.field, item.hint);
+    } else if (item.type === 'user') {
+      addParamField(item.field, item.hint);
+    } else if (item.type === 'url') {
+      addParamField(item.field, item.hint);
+    } else if (item.type === 'multi') {
       for (let i = 0; i < item.fields.length; i++) {
-        let val = prompt(`${item.fields[i]} (contoh: ${item.hints[i]}):`, item.hints[i]);
-        if (val) params.append(item.fields[i], val);
+        addParamField(item.fields[i], item.hints[i]);
       }
-    }
-
-    const queryString = params.toString();
-    if (queryString) {
-      fullUrl += "?" + queryString;
-    }
-
-    try {
-      const res = await fetch(fullUrl);
-      const data = await res.json();
-      alert("✅ Response API:\n" + JSON.stringify(data, null, 2));
-    } catch (err) {
-      alert("❌ Error: " + err.message);
     }
   }
 
-  // Render grid (tampilan sama persis)
+  function addParamField(name, placeholder) {
+    const div = document.createElement('div');
+    div.className = 'param-group';
+    div.innerHTML = `
+      <label>${name}</label>
+      <input type="text" name="${name}" placeholder="${placeholder}" value="${placeholder}">
+    `;
+    modalParamsContainer.appendChild(div);
+  }
+
+  // Execute request
+  executeBtn.onclick = async () => {
+    if (!currentEndpoint) return;
+    // Ambil nilai dari input
+    const params = new URLSearchParams();
+    const inputs = modalParamsContainer.querySelectorAll('input');
+    for (let input of inputs) {
+      const val = input.value.trim();
+      if (val) {
+        params.append(input.name, val);
+      }
+    }
+    let url = currentEndpoint.base;
+    const queryString = params.toString();
+    if (queryString) url += '?' + queryString;
+
+    responsePreview.textContent = '⏳ Loading...';
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      responsePreview.textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+      responsePreview.textContent = '❌ Error: ' + err.message;
+    }
+  };
+
+  // Tutup modal dengan tombol close
+  closeModalBtn.onclick = closeModal;
+  // Tutup jika klik overlay (sidebar overlay tidak ganggu)
+  document.getElementById('overlay').addEventListener('click', () => {
+    if (modal.classList.contains('open')) closeModal();
+  });
+
+  // ========== RENDER GRID ==========
   function renderGrid(containerId, items) {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = items.map(item => `
-      <div class="api-card" onclick='fetchApi(${JSON.stringify(item)})'>
+      <div class="api-card" data-endpoint='${JSON.stringify(item)}'>
         <h3><i class="${item.icon}"></i> ${item.name}</h3>
         <p>${item.base}</p>
         <small style="color:#6b7280;">📝 Contoh: ${item.hint || item.hints?.join(", ") || "input sendiri"}</small>
       </div>
     `).join('');
+
+    // Pasang event listener untuk setiap card
+    container.querySelectorAll('.api-card').forEach(card => {
+      const item = JSON.parse(card.dataset.endpoint);
+      card.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModal(item);
+      });
+    });
   }
 
   renderGrid('stalkGrid', stalkEndpoints);
   renderGrid('searchGrid', searchEndpoints);
   renderGrid('downloaderGrid', downloaderEndpoints);
 
-  // Sidebar & Tab logic (SAMA PERSIS)
+  // ========== SIDEBAR & TAB LOGIC ==========
   const menuBtn = document.getElementById('menuBtn');
   const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
+  const overlaySidebar = document.getElementById('overlay');
   const dashboardTab = document.getElementById('dashboardTab');
   const reportTab = document.getElementById('reportTab');
   const navLinks = document.querySelectorAll('.nav-link');
 
   function closeSidebar() {
     sidebar.classList.remove('open');
-    overlay.classList.remove('active');
+    overlaySidebar.classList.remove('active');
   }
 
   function openSidebar() {
     sidebar.classList.add('open');
-    overlay.classList.add('active');
+    overlaySidebar.classList.add('active');
   }
 
   menuBtn.addEventListener('click', openSidebar);
-  overlay.addEventListener('click', closeSidebar);
+  overlaySidebar.addEventListener('click', closeSidebar);
 
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
@@ -436,4 +656,4 @@
   });
 </script>
 </body>
-        </html>
+  </html>
