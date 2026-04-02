@@ -30,6 +30,7 @@ app.all('/proxy/:category/:action', async (req, res) => {
       'search/youtube': `https://api.siputzx.my.id/api/s/youtube?query=${query.query || 'Windah Basudara'}`,
       'search/spotify': `https://api.siputzx.my.id/api/s/spotify?query=${query.query || 'serana'}`,
       'search/mangatoon': `https://api.siputzx.my.id/api/s/mangatoon?query=${query.query || 'Chainsawman'}`,
+      'search/seegore': `https://https://api.siputzx.my.id/api/s/seegore?query=${query.query || 'train'}`,
       'search/applemusic': `https://api.siputzx.my.id/api/s/applemusic?query=${query.query || 'duka'}&region=${query.region || 'id'}`,
       'search/resep': `https://api.siputzx.my.id/api/s/resep?query=${query.query || 'nasi goreng'}`,
       'search/lahelu': `https://api.siputzx.my.id/api/s/lahelu?query=${query.query || 'meme upin ipin'}`,
