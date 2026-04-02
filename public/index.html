@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Fahz-Server API | Gateway Elegan</title>
+  <title>Fahz-Server API | Gateway API Docs</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -236,7 +236,7 @@
       .logo-area h1 { font-size: 1rem; }
     }
 
-    /* ========== NEW MODAL STYLES ========== */
+    /* ========== MODAL STYLES (SAMA) ========== */
     .api-modal {
       position: fixed;
       top: 50%;
@@ -410,9 +410,9 @@
     <!-- Dashboard -->
     <div id="dashboardTab">
       <div class="hero-card">
-        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">✨ Official Gateway</p>
+        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">✨ Official API</p>
         <h2 style="font-size: 1.8rem;">Fahz-Server API</h2>
-        <p>Proxy endpoint mewah, anti CORS, dan super cepat. Pilih kategori di bawah.</p>
+        <p>Proxy endpoint GG Gimang, anti CORS, dan super cepat. Pilih kategori di bawah.</p>
         <div style="margin-top: 1rem;"><span class="badge"><i class="fas fa-shield-alt"></i> Vercel Serverless</span> <span class="badge"><i class="fas fa-code"></i> by Fahz</span></div>
       </div>
 
@@ -427,9 +427,13 @@
       <!-- Kategori Downloader -->
       <h3 class="section-title"><i class="fas fa-download"></i> Downloader</h3>
       <div class="api-grid" id="downloaderGrid"></div>
+
+      <!-- Kategori Gore (TAMBAHAN) -->
+      <h3 class="section-title"><i class="fas fa-skull"></i> Gore</h3>
+      <div class="api-grid" id="goreGrid"></div>
     </div>
 
-    <!-- Report Tab (hidden awal) -->
+    <!-- Report Tab -->
     <div id="reportTab" style="display: none;">
       <div class="hero-card" style="text-align: center;">
         <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #f97316;"></i>
@@ -441,12 +445,12 @@
   </div>
 
   <div class="footer">
-    <p>© 2025 Fahz-Server API | Owner: <strong>Fahz</strong> | Region: Gunungkidul | <i class="fab fa-github"></i> <a href="https://fahz-devoffc" target="_blank" style="color:#a78bfa;">GitHub</a><br>
-    Made with ☕ by human (Just-Lisa helped)</p>
+    <p>© 2025 Fahz-Server API | Owner: <strong>Fahz</strong> | Region: Gunungkidul | <i class="fab fa-github"></i> <a href="https://github.com/fahz-devoffc" target="_blank" style="color:#a78bfa;">GitHub</a><br>
+    Made with ☕ Fahz Dev (Digital Ocean LLC.)</p>
   </div>
 </div>
 
-<!-- ========== MODAL UNTUK API TESTER ========== -->
+<!-- ========== MODAL API TESTER ========== -->
 <div id="apiModal" class="api-modal">
   <div class="modal-header">
     <h2><i id="modalIcon" class="fas fa-code"></i> <span id="modalTitle">Endpoint</span></h2>
@@ -494,6 +498,11 @@
     { name: "Pinterest", type: "url", field: "url", hint: "https://pinterest.com/pin/xxx", icon: "fab fa-pinterest", base: "/proxy/downloader/pinterest" }
   ];
 
+  // ========== TAMBAHAN: GORE ENDPOINTS ==========
+  const goreEndpoints = [
+    { name: "Seegore", type: "query", field: "query", hint: "train", icon: "fas fa-skull", base: "/proxy/search/seegore" }
+  ];
+
   // ========== MODAL LOGIC ==========
   let currentEndpoint = null;
   const modal = document.getElementById('apiModal');
@@ -507,27 +516,20 @@
   function closeModal() {
     modal.classList.remove('open');
     currentEndpoint = null;
-    // reset form
     modalParamsContainer.innerHTML = '';
     responsePreview.textContent = 'Belum ada request.';
   }
 
   function openModal(item) {
-    // Jika modal terbuka dan endpoint yang sama, close
     if (currentEndpoint === item && modal.classList.contains('open')) {
       closeModal();
       return;
     }
-    // Set current
     currentEndpoint = item;
-    // Set judul dan icon
     modalTitle.textContent = item.name;
     modalIcon.className = item.icon;
-    // Build form dinamis
     buildParamForm(item);
-    // Reset response
     responsePreview.textContent = 'Belum ada request.';
-    // Tampilkan modal
     modal.classList.add('open');
   }
 
@@ -558,17 +560,13 @@
     modalParamsContainer.appendChild(div);
   }
 
-  // Execute request
   executeBtn.onclick = async () => {
     if (!currentEndpoint) return;
-    // Ambil nilai dari input
     const params = new URLSearchParams();
     const inputs = modalParamsContainer.querySelectorAll('input');
     for (let input of inputs) {
       const val = input.value.trim();
-      if (val) {
-        params.append(input.name, val);
-      }
+      if (val) params.append(input.name, val);
     }
     let url = currentEndpoint.base;
     const queryString = params.toString();
@@ -584,9 +582,7 @@
     }
   };
 
-  // Tutup modal dengan tombol close
   closeModalBtn.onclick = closeModal;
-  // Tutup jika klik overlay (sidebar overlay tidak ganggu)
   document.getElementById('overlay').addEventListener('click', () => {
     if (modal.classList.contains('open')) closeModal();
   });
@@ -603,7 +599,6 @@
       </div>
     `).join('');
 
-    // Pasang event listener untuk setiap card
     container.querySelectorAll('.api-card').forEach(card => {
       const item = JSON.parse(card.dataset.endpoint);
       card.addEventListener('click', (e) => {
@@ -616,6 +611,7 @@
   renderGrid('stalkGrid', stalkEndpoints);
   renderGrid('searchGrid', searchEndpoints);
   renderGrid('downloaderGrid', downloaderEndpoints);
+  renderGrid('goreGrid', goreEndpoints);   // <-- TAMBAHAN
 
   // ========== SIDEBAR & TAB LOGIC ==========
   const menuBtn = document.getElementById('menuBtn');
@@ -656,4 +652,4 @@
   });
 </script>
 </body>
-  </html>
+</html>
